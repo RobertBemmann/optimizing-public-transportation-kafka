@@ -36,9 +36,9 @@ class Producer:
         # TODO: Configure the broker properties below. Make sure to reference the project README
         # and use the Host URL for Kafka and Schema Registry!
         #
-        self.broker_properties = {	"bootstrap.servers": BROKER_URL, 
-									"schema.registry.url": SCHEMA_REGISTRY_URL
-								}
+        self.broker_properties = {  "bootstrap.servers": BROKER_URL, 
+                                    "schema.registry.url": SCHEMA_REGISTRY_URL
+                                }
 
         # If the topic does not already exist, try to create it
         if self.topic_name not in Producer.existing_topics:
@@ -46,23 +46,23 @@ class Producer:
             Producer.existing_topics.add(self.topic_name)
 
         # TODO: Configure the AvroProducer
-		# https://docs.confluent.io/current/clients/confluent-kafka-python/#confluent_kafka.avro.AvroProducer
-		#
-        self.producer = AvroProducer(	self.broker_properties, 
-										default_key_schema=self.key_schema, 
-										default_value_schema=self.value_schema
-									)
+        # https://docs.confluent.io/current/clients/confluent-kafka-python/#confluent_kafka.avro.AvroProducer
+        #
+        self.producer = AvroProducer(   self.broker_properties, 
+                                        default_key_schema=self.key_schema, 
+                                        default_value_schema=self.value_schema
+                                    )
 
     def create_topic(self):
         """Creates the producer topic if it does not already exist"""
         # TODO: Write code that creates the topic for this producer if it does not already exist on
         # the Kafka Broker.
-		#
-		logging.info(f"check if topic {self.topic_name} exists...")
-		
-		client = AdminClient({"bootstrap.servers": self.broker_properties['bootstrap.servers']})
-		
-		topic_metadata = client.list_topics(timeout = 5)
+        #
+        logging.info(f"check if topic {self.topic_name} exists...")
+        
+        client = AdminClient({"bootstrap.servers": self.broker_properties['bootstrap.servers']})
+        
+        topic_metadata = client.list_topics(timeout = 5)
 
         # Check existence of topic in client.list_topics
         if self.topic_name in topic_metadata.topics:
@@ -72,18 +72,18 @@ class Producer:
             logger.info(f"creating topic {self.topic_name}, partitions - {self.num_partitions}, replicas - {self.num_replicas}")
 
         # If not exists, create topic
-        futures = client.create_topics([NewTopic(	
-													topic=self.topic_name, 
-													num_partitions=self.num_partitions, 
-													replication_factor=self.num_replicas)]
-										)
-		for _, future in futures.items():
-			try:
-				future.result()
-				logging.info(f"topic {self.topic_name} created, partitions - {self.num_partitions}, replicas - {self.num_replicas}"
-				)
-			except Exception as e:
-				logger.fatal(f"unable to create topic {self.topic_name}, {e}")
+        futures = client.create_topics([NewTopic(   
+                                                    topic=self.topic_name, 
+                                                    num_partitions=self.num_partitions, 
+                                                    replication_factor=self.num_replicas)]
+                                        )
+        for _, future in futures.items():
+            try:
+                future.result()
+                logging.info(f"topic {self.topic_name} created, partitions - {self.num_partitions}, replicas - {self.num_replicas}"
+                )
+            except Exception as e:
+                logger.fatal(f"unable to create topic {self.topic_name}, {e}")
 
 
     def time_millis(self):

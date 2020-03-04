@@ -14,10 +14,10 @@ logger = logging.getLogger(__name__)
 class Station(Producer):
     """Defines a single station"""
 
-	# TODO: Define this value schema in `schemas/arrival_value.json, then uncomment the below
+    # TODO: Define this value schema in `schemas/arrival_value.json, then uncomment the below
     #
     key_schema = avro.load(f"{Path(__file__).parents[0]}/schemas/arrival_key.json")
-	value_schema = avro.load(f"{Path(__file__).parents[0]}/schemas/arrival_value.json")
+    value_schema = avro.load(f"{Path(__file__).parents[0]}/schemas/arrival_value.json")
 
     def __init__(self, station_id, name, color, direction_a=None, direction_b=None):
         self.name = name
@@ -55,16 +55,16 @@ class Station(Producer):
         # TODO: Complete this function by producing an arrival message to Kafka
         #
         self.producer.produce(
-			topic=self.topic_name,
-			key={"timestamp": self.time_millis()},
-			value={	"station_id": self.station_id, 
-					"train_id": train.train_id,
-					"direction": direction,
-					"line": self.color.name,
-					"train_status": train.status.name,
-					"prev_station_id": prev_station_id,
-					"prev_direction": prev_direction
-					},
+            topic=self.topic_name,
+            key={"timestamp": self.time_millis()},
+            value={ "station_id": self.station_id, 
+                    "train_id": train.train_id,
+                    "direction": direction,
+                    "line": self.color.name,
+                    "train_status": train.status.name,
+                    "prev_station_id": prev_station_id,
+                    "prev_direction": prev_direction
+                    },
         )
 
     def __str__(self):
