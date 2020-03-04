@@ -26,24 +26,24 @@ def configure_connector():
     # Make sure to think about what an appropriate topic prefix would be, and how frequently Kafka
     # Connect should run this connector (hint: not very often!)
     resp = requests.post(
-			KAFKA_CONNECT_URL,
-			headers={"Content-Type": "application/json"},
-			data=json.dumps({
-			"name": CONNECTOR_NAME,
-			"config": {
-				"connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
+            KAFKA_CONNECT_URL,
+            headers={"Content-Type": "application/json"},
+            data=json.dumps({
+            "name": CONNECTOR_NAME,
+            "config": {
+                "connector.class": "io.confluent.connect.jdbc.JdbcSourceConnector",
                 "key.converter": "org.apache.kafka.connect.json.JsonConverter",
                 "key.converter.schemas.enable": "false",
                 "value.converter": "org.apache.kafka.connect.json.JsonConverter",
                 "value.converter.schemas.enable": "false",
                 "batch.max.rows": "500",
-			# TODO
-				"connection.url": "jdbc:postgresql://localhost:5432/cta",
-			# TODO
+            # TODO
+                "connection.url": "jdbc:postgresql://localhost:5432/cta",
+            # TODO
                 "connection.user": "cta_admin",
-			# TODO
+            # TODO
                 "connection.password": "chicago",
-			# TODO
+            # TODO
                 "table.whitelist": "stations",
             # TODO
                 "mode": "incrementing",

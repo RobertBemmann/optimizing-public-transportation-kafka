@@ -41,7 +41,7 @@ out_topic = app.topic("com.udacity.cta.stations.table.v1", partitions=1)
 
 # TODO: Define a Faust Table
 table = app.Table(
-	"com.udacity.cta.stations.table.v1",
+    "com.udacity.cta.stations.table.v1",
     default=TransformedStation,
     partitions=1,
     changelog_topic=out_topic,
@@ -53,15 +53,15 @@ table = app.Table(
 #
 @app.agent(topic)
 async def process(stream):
-	async for event in stream:
-		
-		table[event.station_id] = TransformedStation(
-            station_id=		event.station_id,
-            station_name=	event.station_name,
-            order=			event.order,
-            line=			'red' if event.red else 'blue' if event.blue else 'green',
-		)
-		
+    async for event in stream:
+        
+        table[event.station_id] = TransformedStation(
+            station_id=     event.station_id,
+            station_name=   event.station_name,
+            order=          event.order,
+            line=           'red' if event.red else 'blue' if event.blue else 'green',
+        )
+        
 
 
 if __name__ == "__main__":
