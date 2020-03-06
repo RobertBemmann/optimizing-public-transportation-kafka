@@ -37,7 +37,7 @@ class KafkaConsumer:
         #
         self.broker_properties = {  "bootstrap.servers": BROKER_URL, 
                                     "group.id": f"{topic_name_pattern}",
-									"default.topic.config": {"auto.offset.reset": "earliest"}
+                                    "default.topic.config": {"auto.offset.reset": "earliest"}
                                 }
 
         # TODO: Create the Consumer, using the appropriate type.
@@ -62,7 +62,7 @@ class KafkaConsumer:
                 logger.debug("setting partitions to earliest for %s", self.topic_name_pattern)
                 partition.offset = confluent_kafka.OFFSET_BEGINNING
         
-		logger.info("partitions assigned for %s", self.topic_name_pattern)
+        logger.info("partitions assigned for %s", self.topic_name_pattern)
         consumer.assign(partitions)
 
     async def consume(self):
@@ -83,15 +83,15 @@ class KafkaConsumer:
             message = self.consumer.poll(timeout=self.consume_timeout)
             if message is None:
                 logger.debug("no message received")
-				return 0
+                return 0
             elif message.error() is not None:
                 logger.error(f"message error {self.topic_name_pattern} - {message.error()}")
-				return 0
-		
-		logger.debug(f"{message} consumed")
+                return 0
+        
+        logger.debug(f"{message} consumed")
         self.message_handler(message)
         return 1
-		
+        
 
 
     def close(self):
