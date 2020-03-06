@@ -65,7 +65,7 @@ class Line:
             except Exception as e:
                 logger.fatal("bad station? %s, %s", value, e)
         # Set the conditional to the arrival topic
-		elif message.topic() == "com.udacity.cta.turnstiles.v1": 
+		elif message.topic() == "com.udacity.cta.arrivals.v1": 
             self._handle_arrival(message)
         # Set the conditional to the KSQL Turnstile Summary Topic
 		elif message.topic() == "TURNSTILE_SUMMARY":
